@@ -1,11 +1,11 @@
 package com.example.CourseRegistrationAPI.controllers;
 
+import com.example.CourseRegistrationAPI.DTOs.RequestDTOs.RegistrationRequest;
+import com.example.CourseRegistrationAPI.DTOs.ResponseDTOs.RegistrationResponse;
 import com.example.CourseRegistrationAPI.models.Registration;
 import com.example.CourseRegistrationAPI.services.RegistrationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +18,16 @@ public class RegistrationController {
     this.registrationService = registrationService;
   }
   @GetMapping
-  public ResponseEntity<List<Registration>> getAllRegistrations() {
+  public ResponseEntity<List<RegistrationResponse>> getAllRegistrations() {
     return ResponseEntity.ok(registrationService.getAllRegistrations());
+  }
+  @PostMapping
+  public ResponseEntity<RegistrationResponse> createRegistration(@RequestBody RegistrationRequest registrationRequest) {
+    return ResponseEntity.status(201).body(registrationService.createRegistration(registrationRequest));
+  }
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteRegistration(@PathVariable Long id) {
+    registrationService.deleteRegistration(id);
+    return ResponseEntity.noContent().build();
   }
 }
