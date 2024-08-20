@@ -30,4 +30,9 @@ public class RegistrationController {
     registrationService.deleteRegistration(id);
     return ResponseEntity.noContent().build();
   }
+  @PutMapping("/{id}")
+  public ResponseEntity<RegistrationResponse> updateRegistration(@PathVariable Long id, @RequestBody RegistrationRequest requestDto) {
+    return ResponseEntity.ok(registrationService.updateRegistration(id, requestDto));
+  }
+
 }

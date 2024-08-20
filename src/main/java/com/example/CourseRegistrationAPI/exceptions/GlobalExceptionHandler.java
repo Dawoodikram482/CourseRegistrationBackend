@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-  @ExceptionHandler(RegistrationNotFoundException.class) public ResponseEntity<String> handleRegistrationNotFoundException(RegistrationNotFoundException ex) {
+  @ExceptionHandler(RegistrationNotFoundException.class)
+  public ResponseEntity<String> handleRegistrationNotFoundException(RegistrationNotFoundException ex) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 }

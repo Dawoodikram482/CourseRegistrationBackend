@@ -2,6 +2,7 @@ package com.example.CourseRegistrationAPI.services;
 
 import com.example.CourseRegistrationAPI.DTOs.RequestDTOs.RegistrationRequest;
 import com.example.CourseRegistrationAPI.DTOs.ResponseDTOs.RegistrationResponse;
+import com.example.CourseRegistrationAPI.exceptions.RegistrationNotFoundException;
 import com.example.CourseRegistrationAPI.models.Registration;
 import com.example.CourseRegistrationAPI.repositories.RegistrationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,29 @@ public class RegistrationService {
         .map(this::toResponseDto)
         .collect(Collectors.toList());
   }
+
   public RegistrationResponse createRegistration(RegistrationRequest registrationRequest) {
     Registration registration = toEntity(registrationRequest);
     return toResponseDto(registrationRepository.save(registration));
   }
+
+  public RegistrationResponse updateRegistration(Long id, RegistrationRequest requestDto) {
+    Registration registration = registrationRepository.findById(id)
+        .orElseThrow(() -> new RegistrationNotFoundException("Registration with ID " + id + " not found"));
+    registration.setChildName(requestDto.childName());
+    registration.setAge(requestDto.age());
+    registration.setCourseSelected(requestDto.courseSelected());
+    registration.setParentName(requestDto.parentName());
+    registration.setParentEmail(requestDto.parentEmail());
+    registration.setParentPhone(requestDto.contactNumber());
+    registration = registrationRepository.save(registration);
+    return toResponseDto(registration);
+  }
+
   public void deleteRegistration(Long id) {
-    registrationRepository.deleteById(id);
+    Registration registration = registrationRepository.findById(id)
+        .orElseThrow(() -> new RegistrationNotFoundException("Registration with ID " + id + " not found"));
+    registrationRepository.delete(registration);
   }
 
   private Registration toEntity(RegistrationRequest dto) {
