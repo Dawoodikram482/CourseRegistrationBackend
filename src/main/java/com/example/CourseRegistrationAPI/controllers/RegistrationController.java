@@ -2,7 +2,6 @@ package com.example.CourseRegistrationAPI.controllers;
 
 import com.example.CourseRegistrationAPI.DTOs.RequestDTOs.RegistrationRequest;
 import com.example.CourseRegistrationAPI.DTOs.ResponseDTOs.RegistrationResponse;
-import com.example.CourseRegistrationAPI.models.Registration;
 import com.example.CourseRegistrationAPI.services.RegistrationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +33,8 @@ public class RegistrationController {
   public ResponseEntity<RegistrationResponse> updateRegistration(@PathVariable Long id, @RequestBody RegistrationRequest requestDto) {
     return ResponseEntity.ok(registrationService.updateRegistration(id, requestDto));
   }
-
+  @GetMapping("/{id}")
+  public ResponseEntity<RegistrationResponse> getRegistrationById(@PathVariable Long id) {
+    return ResponseEntity.ok(registrationService.getRegistrationById(id));
+  }
 }

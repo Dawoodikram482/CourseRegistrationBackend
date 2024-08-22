@@ -5,7 +5,6 @@ import com.example.CourseRegistrationAPI.DTOs.ResponseDTOs.RegistrationResponse;
 import com.example.CourseRegistrationAPI.exceptions.RegistrationNotFoundException;
 import com.example.CourseRegistrationAPI.models.Registration;
 import com.example.CourseRegistrationAPI.repositories.RegistrationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +22,11 @@ public class RegistrationService {
     return registrationRepository.findAll().stream()
         .map(this::toResponseDto)
         .collect(Collectors.toList());
+  }
+  public RegistrationResponse getRegistrationById(Long id) {
+    Registration registration = registrationRepository.findById(id)
+        .orElseThrow(() -> new RegistrationNotFoundException("Registration with ID " + id + " not found"));
+    return toResponseDto(registration);
   }
 
   public RegistrationResponse createRegistration(RegistrationRequest registrationRequest) {
